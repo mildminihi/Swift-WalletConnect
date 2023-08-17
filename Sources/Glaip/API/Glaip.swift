@@ -43,6 +43,18 @@ public final class Glaip: ObservableObject {
   public func logout() {
     walletConnect.disconnect()
   }
+    
+    public func signContract(wallet: WalletType, message: String, completion: @escaping (Result<String, Error>) -> Void) {
+        let service = WalletLinkService(title: title, description: description)
+        service.sign(wallet: wallet, message: message) { result in
+            switch result {
+            case .success(let message):
+                completion(.success(message))
+            case let .failure(error):
+                completion(.failure(error))
+            }
+        }
+    }
 
   private func walletLogin(wallet: WalletType, completion: @escaping (Result<User, Error>) -> Void) {
     let service = WalletLinkService(title: title, description: description)
